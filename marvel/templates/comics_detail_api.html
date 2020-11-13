@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    {{ comic.title }}
+{% endblock %}
+
+{% block content %}
+    <div class=" my-xl-3">
+        <div class="row mb-1">
+            <div class="col-md-12">
+                <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                    <div class="col p-4 d-flex flex-column position-static">
+                        <h3 class="mb-0">{{ comic.title }}</h3>
+                        <div class="mb-1 text-muted">{{ comic.dates.0.date|slice:10 }}</div>
+                        <p class="card-text mb-auto">{{ comic.description }}</p>
+                        <p class="card-text mb-auto">{{ comic.ean }}</p>
+                        <p class="mb-1">Истории:</p>
+                        <ul>
+                        {% for story in comic.stories.items %}
+                            <li class="card-text mb-auto">{{ story.name }}</li>
+                        {% endfor %}
+                        </ul>
+
+                        <p class="mb-1">Персонажи:</p>
+                        <ul>
+                        {% for char in comic.characters.items %}
+                            <li class="card-text mb-auto">{{ char.name }}</li>
+                        {% endfor %}
+                        </ul>
+
+                        <p class="mb-1">Изображения:</p>
+                        {% for image in comic.images %}
+                            <img src="{{ image.path }}.{{ image.extension }}" alt=""
+                            width="100" height="120">
+                        {% endfor %}
+
+
+
+
+                        <form action="{% url 'marvel:comics_create' comic.id %}" method="post">
+                            {% csrf_token %}
+                            <button class="btn btn-primary" type="submit">Сохранить</button>
+                        </form>
+                    </div>
+                    <div class="col-auto d-none d-lg-block">
+                        <img class="bd-placeholder-img" src="{{ comic.thumbnail.path }}.{{ comic.thumbnail.extension }}"
+                             alt="обложка {{ comic.title }}" width="400" height="550">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
