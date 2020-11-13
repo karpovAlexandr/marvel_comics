@@ -1,11 +1,12 @@
-import json
 import hashlib
 import re
 import string
 import random
-from pprint import pprint
 
 from marvel.models import Characters, Creators, Stories, Images
+
+
+ID_PATTERN = r'(\d*)$'
 
 
 def ts_generator(size=6, chars=string.ascii_uppercase + string.digits):
@@ -18,19 +19,17 @@ def get_hash_string(*args):
 
 
 def create_character(character_data):
-    id_pattern = r'(\d*)$'
+
     characters = []
     for character in character_data:
         cleaned_character = dict()
-        result = re.findall(id_pattern, character['resourceURI'])
+        result = re.findall(ID_PATTERN, character['resourceURI'])
         character_id = int(result[0])
-        # characters.append(character_id)
+
         if not Characters.objects.filter(id=character_id):
             cleaned_character['id'] = character_id
             cleaned_character['name'] = character['name']
             cleaned_character['resource_uri'] = character['resourceURI']
-            pprint(cleaned_character)
-            print(f"объект персонаж {character_id} создан")
             characters.append(Characters.objects.create(**cleaned_character))
     return characters
 
@@ -44,42 +43,38 @@ def create_image(images_data):
 
 
 def create_creator(creator_data):
-    id_pattern = r'(\d*)$'
+
     creators = []
     for creator in creator_data:
         cleaned_creator = dict()
-        result = re.findall(id_pattern, creator['resourceURI'])
+        result = re.findall(ID_PATTERN, creator['resourceURI'])
         creator_id = int(result[0])
-        # creators.append(creator_id)
+
         if not Creators.objects.filter(id=creator_id):
             cleaned_creator['id'] = creator_id
             cleaned_creator['name'] = creator['name']
             cleaned_creator['role'] = creator['role']
             cleaned_creator['resource_uri'] = creator['resourceURI']
-            pprint(cleaned_creator)
-            print(type(cleaned_creator))
             creators.append(Creators.objects.create(**cleaned_creator))
-            print(f"объект создатель {creator_id} создан")
+            # print(f"объект создатель {creator_id} создан")
     return creators
 
 
 def create_story(story_data):
-    id_pattern = r'(\d*)$'
+
     stories = []
     for story in story_data:
         cleaned_story = dict()
-        result = re.findall(id_pattern, story['resourceURI'])
+        result = re.findall(ID_PATTERN, story['resourceURI'])
         story_id = int(result[0])
-        # stories.append(story_id)
+
         if not Stories.objects.filter(id=story_id):
             cleaned_story['id'] = story_id
             cleaned_story['name'] = story['name']
             cleaned_story['type'] = story['type']
             cleaned_story['resource_uri'] = story['resourceURI']
-            pprint(cleaned_story)
-            print(type(cleaned_story))
             stories.append(Stories.objects.create(**cleaned_story))
-            print(f"объект истории {story_id} создан")
+            # print(f"объект истории {story_id} создан")
     return stories
 
 
@@ -117,10 +112,6 @@ def prepare_comics_data(comics_data):
     cleaned_data['dates'] = comics_data['dates']
     cleaned_data['prices'] = comics_data['prices']
     cleaned_data['thumbnail'] = f"{comics_data['thumbnail']['path']}.{comics_data['thumbnail']['extension']}"
-    # cleaned_data['images'] = images  # нужно создавать объект
-    # cleaned_data['creators'] = creators
-    # cleaned_data['characters'] = characters
-    # cleaned_data['stories'] = stories
     cleaned_data['events'] = comics_data['events']
 
-    return cleaned_data , stories, characters, creators, images
+    return cleaned_data, stories, characters, creators, images
