@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+    <form action="" method="post">
+        {% csrf_token %}
+        <h1>Вы действительно хотите удалить комикс {{ comics.name }} - id {{ comics.comics_id }}?</h1>
+        <p>
+            <input class="btn btn-primary" type="submit" value="Да">
+            <a class="btn btn-primary" href="{% url 'marvel:master_detail' comics.pk %}" >Нет</a>
+        </p>
+    </form>
+{% endblock %}
+

@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Главная страница
+{% endblock %}
+
+{% block content %}
+    <div class="container my-xl-3">
+        <h2>Коллекция пользователя {{ user.username }}</h2>
+        <div class="row mb-2">
+            {% for comic in object_list %}
+                <div class="col-md-6">
+                    <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                        <div class="col p-4 d-flex flex-column position-static">
+                            <h3 class="mb-0">{{ comic.title }}</h3>
+                            <div class="mb-1 text-muted">{{ comic.dates.0.date|slice:10 }}</div>
+                            <p class="card-text mb-auto">{{ comic.ean }}</p>
+                            <a href="{% url 'marvel:master_detail' comic.pk %}" class="stretched-link">Посмотреть</a>
+                        </div>
+
+                        <div class="col-auto d-none d-lg-block">
+                            <img class="bd-placeholder-img"
+                                 src="{{ comic.thumbnail }}"
+                                 alt="обложка {{ comic.title }}" width="200" height="250">
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
