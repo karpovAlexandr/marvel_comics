@@ -14,9 +14,8 @@
                           <h3 class="mb-0">{{ comic.title }}</h3>
                           <div class="mb-1 text-muted">{{ comic.dates.0.date|slice:10 }}</div>
                           <p class="card-text mb-auto">{{ comic.ean }}</p>
-                          <a href="{% url 'marvel:comics_detail' comic.id %}" class="stretched-link">Посмотреть</a>
+                          <a href="{% url 'marvel:comics_api_detail' comic.id %}" class="stretched-link">Посмотреть</a>
                         </div>
-
 
                         <div class="col-auto d-none d-lg-block">
                             <img class="bd-placeholder-img" src="{{ comic.thumbnail.path }}.{{ comic.thumbnail.extension }}" alt="обложка {{ comic.title }}" width="200" height="250" >
